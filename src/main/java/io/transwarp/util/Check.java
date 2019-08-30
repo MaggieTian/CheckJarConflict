@@ -6,7 +6,6 @@ import org.apache.commons.cli.*;
 public class Check{
 
 
-
     public static  void main(String[] args) throws ParseException {
 
         Boolean isClasspath = false;
@@ -24,8 +23,8 @@ public class Check{
         if(cl.hasOption("d")){
             dirName = cl.getOptionValue("d");
         }
-        // step1: get class from jar
-        // step2: check class conflict
+        CheckConflict check = new CheckConflict(dirName);
+        check.printConflictInfo();
     }
 
 }
