@@ -1,13 +1,12 @@
-package io.transwarp;
+package qa.tool;
 
 
-import io.transwarp.util.JarFileUtil;
+import qa.tool.util.JarFileUtil;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
-import io.transwarp.util.JarFileUtil;
 
 
 public class CheckConflict {

@@ -1,7 +1,7 @@
-package io.transwarp.util;
+package qa.tool.util;
 
-import io.transwarp.Log;
-import io.transwarp.meta.ClassMeta;
+import qa.tool.Log;
+import qa.tool.meta.ClassMeta;
 
 import java.io.File;
 import java.util.*;
