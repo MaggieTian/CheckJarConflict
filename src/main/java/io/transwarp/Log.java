@@ -1,4 +1,4 @@
-package io.transwarp.util;
+package io.transwarp;
 import java.util.logging.Logger;
 
 /**

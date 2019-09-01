@@ -1,4 +1,4 @@
-package io.transwarp.util.meta;
+package io.transwarp.meta;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

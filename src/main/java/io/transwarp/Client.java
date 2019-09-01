@@ -1,4 +1,4 @@
-package io.transwarp.util;
+package io.transwarp;
 
 import org.apache.commons.cli.*;
 public class Client {
@@ -10,7 +10,7 @@ public class Client {
     static{
         opts.addOption("h","help",false,"the command help");
         opts.addOption("d","directory",true,"the command specify the directory which include jar file");
-        opts.addOption("c","classpath",false,"the command sepecify if need checkout the jars that in classpath");
+        opts.addOption("c","config path",false,"the ignore list path which can skip check some package,jar,class");
     }
 
     /**

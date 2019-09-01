@@ -1,11 +1,13 @@
-package io.transwarp.util;
+package io.transwarp;
 
 
-import java.io.File;
+import io.transwarp.util.JarFileUtil;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
+import io.transwarp.util.JarFileUtil;
 
 
 public class CheckConflict {
@@ -13,12 +15,14 @@ public class CheckConflict {
 
     private Map<String, Set<String>> jarClassMap = new HashMap<String, Set<String>>();
     private Map<String, Set<String>> conflictJarMap = new HashMap<String, Set<String>>();
-    private String dirName;
+    private String dirName =null;
+    private String propertyPath = null;
 
 
-    public CheckConflict(String dirName) {
+    public CheckConflict(String dirName,String propertyPath) {
 
         this.dirName = dirName;
+        this.propertyPath = propertyPath;
 
     }
 
@@ -28,15 +32,17 @@ public class CheckConflict {
 
         // use hashSet check ir there are duplicate class or not
         Set<String> allClassSet = new HashSet<String>();
-        JarFileUtil jfUtil = new JarFileUtil();
+        JarFileUtil jfUtil = new JarFileUtil(this.propertyPath);
         ArrayList<String> jarFiles = jfUtil.getJarFiles(this.dirName);
 
         for (String jarFile : jarFiles) {
 
             Set<String> classSet = jfUtil.getClassNames(jarFile);
             allClassSet.addAll(classSet);
-            classCount += classSet.size();
-            jarClassMap.put(jarFile, classSet);
+            classCount +=classSet.size();
+            jarClassMap.put(jarFile,classSet);
+
+
         }
 
         // if classCount != allClassSet.size, then it shows there are duplicate classes
@@ -66,7 +72,7 @@ public class CheckConflict {
 
 
         Map<String, Set<String>> conflictInfo = this.getConflict();
-        JarFileUtil jfUtil = new JarFileUtil();
+        JarFileUtil jfUtil = new JarFileUtil(this.propertyPath);
         Set<String> conflictJars = new HashSet<String>();
 
         FileWriter fileWriter = null;

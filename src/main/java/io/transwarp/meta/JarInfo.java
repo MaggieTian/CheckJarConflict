@@ -1,4 +1,4 @@
-package io.transwarp.util.meta;
+package io.transwarp.meta;
 
 import java.util.ArrayList;
 

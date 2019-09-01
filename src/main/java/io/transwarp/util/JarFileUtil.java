@@ -1,6 +1,7 @@
 package io.transwarp.util;
 
-import io.transwarp.util.meta.ClassMeta;
+import io.transwarp.Log;
+import io.transwarp.meta.ClassMeta;
 
 import java.io.File;
 import java.util.*;
@@ -8,8 +9,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import java.util.logging.Logger;
-
-import io.transwarp.util.Log;
 
 
 /**
@@ -20,8 +19,10 @@ public class JarFileUtil {
 
     private ArrayList<String> jarList = new ArrayList<String>();
     private Logger logger = Log.getLogger();
+    private  String propertyPath = null;
 
-    JarFileUtil() {
+    public JarFileUtil(String propertyPath) {
+        this.propertyPath = propertyPath;
 
     }
 
@@ -32,7 +33,7 @@ public class JarFileUtil {
      * @return ArrayList<String>
      */
 
-    ArrayList<String> getJarFiles(String dirName) {
+    public ArrayList<String> getJarFiles(String dirName) {
 
         this.extractJarFile(dirName);
         return this.jarList;
@@ -40,14 +41,15 @@ public class JarFileUtil {
 
     public void extractJarFile(String dirName) {
         logger.info("===now is get jar file from" + dirName);
+        CheckConfig checkConf = new CheckConfig(this.propertyPath);
         if (dirName.length() > 0) {
             File dir = new File(dirName);
             File[] files = dir.listFiles();
             if (files != null && files.length > 0) {
                 for (File file : files) {
                     String fileName = file.getAbsolutePath();
-                    // directly get jar file under dirName
-                    if (file.isFile() && fileName.endsWith(".jar")) {
+                    // directly get jar file under dirName that not in ignore jar list
+                    if (file.isFile() && fileName.endsWith(".jar") && ! checkConf.isIgnoreJar(file.getName()) ) {
                         this.jarList.add(fileName);
                     }
                     // if there is directory under dirName,then get all child directory jar file
@@ -106,6 +108,7 @@ public class JarFileUtil {
 
     public Set<String> getClassNames(String jarFile) {
         Set<String> classSet = new HashSet<String>();
+        CheckConfig checkConfig = new CheckConfig(this.propertyPath);
         try {
 
             JarFile jar = new JarFile(jarFile);
@@ -114,10 +117,12 @@ public class JarFileUtil {
                 JarEntry entry = jarEntries.nextElement();
                 String entryName = entry.getName();
                 if (!entryName.contains("META-INF")) {
-                    if (entryName.endsWith(".class")) {
+                    if (entryName.endsWith(".class")){
                         String className = entryName.replace("/", ".");
-                        // to do, filter class by add class whitelist
-                        classSet.add(className);
+                        // filter class by add class ignore class list
+                        if(! checkConfig.isIgnoreClass(className) && ! checkConfig.isIgnorePackage(className)){
+                            classSet.add(className);
+                        }
                     }
                 }
             }

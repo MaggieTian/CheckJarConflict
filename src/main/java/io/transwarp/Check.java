@@ -1,4 +1,4 @@
-package io.transwarp.util;
+package io.transwarp;
 
 import org.apache.commons.cli.*;
 
@@ -8,7 +8,7 @@ public class Check{
 
     public static  void main(String[] args) throws ParseException {
 
-        Boolean isClasspath = false;
+        String propertyPath = null;
         String dirName = "";
         CommandLineParser parser = new DefaultParser();
         CommandLine cl = parser.parse(Client.opts,args);
@@ -18,12 +18,13 @@ public class Check{
             Client.printHelp(Client.opts);
         }
         if(cl.hasOption("c")){
-            isClasspath = true;
+            propertyPath = cl.getOptionValue("c");
         }
         if(cl.hasOption("d")){
             dirName = cl.getOptionValue("d");
         }
-        CheckConflict check = new CheckConflict(dirName);
+
+        CheckConflict check = new CheckConflict(dirName,propertyPath);
         check.printConflictInfo();
     }
 
